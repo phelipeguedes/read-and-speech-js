@@ -1,0 +1,19 @@
+body {
+    /* background-color: whitesmoke; */
+}
+
+nav {
+    /* background-color: rgba(0, 0, 0, 0.05); */
+    background-color: rgb(230, 230, 255);
+}
+
+section {
+    margin-top: 4%;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.05);
+}
