@@ -9,7 +9,7 @@ const selAvailableVoices = document.querySelector('#available_voices');
 const tooltipsTrigger = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipsTrigger].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
-// ao passar  mouse nos ícones de áudio, o cursor é alterado
+// ao passar o mouse nos ícones de áudio, o cursor é alterado
 document.querySelector('.icons').style.cursor = 'pointer';
 
 window.onload = () => {
