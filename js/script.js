@@ -3,6 +3,9 @@ const synth = window.speechSynthesis;
 
 const txtArea = document.querySelector('#your_text');
 const iconSpeaker = document.querySelector('#icon_speaker');
+const iconMic = document.querySelector('#icon_mic');
+const iconStop = document.querySelector('#icon_stop');
+const msgStatusVoice = document.querySelector('#status_msg');
 const selAvailableVoices = document.querySelector('#available_voices');
 
 // habilitando tooltips do bootstrap
@@ -11,6 +14,9 @@ const tooltipList = [...tooltipsTrigger].map(tooltipTriggerEl => new bootstrap.T
 
 // ao passar o mouse nos ícones de áudio, o cursor é alterado
 document.querySelector('.icons').style.cursor = 'pointer';
+
+iconStop.style.display = msgStatusVoice.style.display = 'none';
+iconMic.style.display = 'block';
 
 window.onload = () => {
     listAvailableVoices();
@@ -33,8 +39,9 @@ const listAvailableVoices = () => {
     }
 }
 
+// vozes disponíveis no sistema
 const getAvailableVoices = () => {
-    // vozes disponíveis no sistema
+    
     const availableVoices = synth.getVoices();
     return availableVoices;
 }
@@ -58,6 +65,95 @@ readText = () => {
     synth.speak(textToRead);
 }
 
+const rec = new webkitSpeechRecognition();
+
+saySomething = () => {
+    
+    rec.continuous = true;    
+    rec.start();
+
+    rec.onresult = (e) => {
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+
+            let content = e.results[i][0].transcript.trim();
+            let arrContent = [];
+            // tudo que foi dito é aramazenado num array p/ ser escrito sequencialmente no txt área
+            arrContent.push(content);
+            // no final de cada frase, há um ponto final
+            arrContent += '. ';
+
+            if (e.results[i].isFinal)
+                txtArea.textContent += arrContent;
+            
+            console.log(content);
+            console.log(arrContent);
+        }
+    }
+}
+
+stopRecognitionVoice = () => {
+    console.log('O reconhecimento de voz foi parado');
+    
+    setMsgStatusVoiceVisibility();
+    setIconStopVisibility();
+    setIconMicrophoneVisibility();
+    rec.stop();    
+}
+
+setVoiceStatus = () => {
+    console.log('Mudando o status da mensagem...');
+    
+    setMsgStatusVoiceVisibility();
+    setIconStopVisibility();
+}
+
+setIconStopVisibility = () => {
+
+    if(iconStop.style.display == 'block')
+        iconStop.style.display = 'none';
+    else
+        iconStop.style.display = 'block';
+}
+
+setIconMicrophoneVisibility = () => {
+
+    if(iconMic.style.display == 'block')
+        iconMic.style.display = 'none'
+    else
+        iconMic.style.display = 'block';
+}
+
+setMsgStatusVoiceVisibility = () => {
+
+    if(msgStatusVoice.style.display == 'block')
+        msgStatusVoice.style.display = 'none';
+    else
+        msgStatusVoice.style.display = 'block';
+}
+
 iconSpeaker.addEventListener('click', () => {
     readText();
 });
+
+iconMic.addEventListener('click', () => {
+    saySomething();
+    setIconMicrophoneVisibility();
+    setIconStopVisibility();
+    setVoiceStatus();
+});
+
+iconStop.addEventListener('click', () => {
+    stopRecognitionVoice();
+});
+
+// gravando áudio do microfone
+rec.onstart = () => {
+    setIconStopVisibility();
+    msgStatusVoice.innerHTML = 'Ouvindo...';
+}
+
+// quando a gravação é encerrada
+rec.onspeechend = () => {
+    iconStop.style.display = 'none';
+    msgStatusVoice.innerHTML = '';
+}

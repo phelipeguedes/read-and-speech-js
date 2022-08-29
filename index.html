@@ -39,17 +39,24 @@
                             placeholder="Insira o seu texto ou fale no microfone"></textarea>
                 </div>
 
-                <div class="col-5">
+                <div class="col-6">
                     <select class="form-select" id="available_voices" aria-label="Default select example">
                         <option selected>Selecione um idioma</option>    
                     </select>
                 </div>
             </div>
 
-            <div class="d-flex flex-row mb-3">
-                <div class="icons">
+            <div class="d-flex flex-row">
+                <div class="d-inline-flex icons">
                     <i class="fa-solid fa-volume-high" id="icon_speaker" data-bs-toggle="tooltip" data-bs-title="Ouvir"></i>&nbsp;&nbsp;
                     <i class="fa-solid fa-microphone-lines" id="icon_mic" data-bs-toggle="tooltip" data-bs-title="Falar"></i>
+                    <i class="fa-solid fa-stop" id="icon_stop" data-bs-toggle="tooltip" data-bs-title="Parar de falar"></i>
+                </div>
+            </div>
+
+            <div class="d-flex flex-row mb-3">
+                <div class="status">
+                    <span id="status_msg"></span>
                 </div>
             </div>
         </div>
